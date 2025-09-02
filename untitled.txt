@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shipment Tracking</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    input, button { padding: 8px; margin: 5px; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+    .status { font-weight: bold; color: green; }
+    .notfound { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Shipment Tracking System</h2>
+  <label for="trackingNumber">Enter Tracking Number:</label>
+  <input type="text" id="trackingNumber" placeholder="e.g. SHIP1001">
+  <button onclick="trackShipment()">Track</button>
+
+  <div id="result"></div>
+
+  <script>
+    // Example database of shipments
+    const shipments = {
+      "SHIP1001": [
+        { date: "2025-09-01", location: "Washington DC", status: "Package received" },
+        { date: "2025-09-02", location: "New York", status: "In Transit" },
+        { date: "2025-09-03", location: "London Heathrow", status: "Customs Clearance" },
+        { date: "2025-09-04", location: "Manchester", status: "Delivered" }
+      ],
+      "SHIP1002": [
+        { date: "2025-09-01", location: "Paris", status: "Package received" },
+        { date: "2025-09-02", location: "Berlin", status: "In Transit" }
+      ]
+    };
+
+    function trackShipment() {
+      const trackingNumber = document.getElementById("trackingNumber").value.trim();
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "";
+
+      if (shipments[trackingNumber]) {
+        shipments[trackingNumber].forEach(record => {
+          const div = document.createElement("div");
+          div.className = "card";
+          div.innerHTML = `
+            <p><b>Date:</b> ${record.date}</p>
+            <p><b>Location:</b> ${record.location}</p>
+            <p class="status"><b>Status:</b> ${record.status}</p>
+          `;
+          resultDiv.appendChild(div);
+        });
+      } else {
+        resultDiv.innerHTML = `<p class="notfound">No shipment found for tracking number: ${trackingNumber}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
